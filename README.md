@@ -113,7 +113,7 @@ Enabled√
 
 Initial state: online
 
-Tracking hostname or IP address: Baidu.com, qq.com
+Tracking hostname or IP address: baidu.com, qq.com
 
 其他不动
 
