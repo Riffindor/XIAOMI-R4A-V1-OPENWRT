@@ -25,7 +25,7 @@ telnet to <ins>breed</ins>
 
 利用工具架设虚拟服务器，上传.bin文件
 
-wget htts://*****/x.bin
+wget http://*****/x.bin
 
 输出信息
 
@@ -41,7 +41,7 @@ flash write 0x180000 <ins>0x80001000 **B**</ins>
 
 ### 顺手刷入事前备份的epprom固件(修复5G信号弱问题)
 
-wget htts://*****/x.bin
+wget http://*****/x.bin
 
 flash erase 0x50000 <ins>**0x10000**</ins>
 
