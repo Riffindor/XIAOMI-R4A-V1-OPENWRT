@@ -49,6 +49,11 @@ flash write 0x50000 <ins>0x80001000 **0x10000**</ins>
 
 最后boot flash <ins>**0x180000**</ins>
 
+重启到breed界面,然后开启环境变量编辑,再重启一次进breed就可以添加环境变量。
+
+在环境变量界面，增加autoboot.command字段，值设为boot flash 0x180000
+即可，这就是告诉breed启动系统时，从0x180000处启动
+
 ## 配置openwrt环境
 
   后台地址192.168.1.1
@@ -261,7 +266,7 @@ echo "nameserver X.X.X.X" > /etc/resolv.conf
 
 ## Final
 
-感谢前人的无私奉献，我也只是把他们的知识综合运用起来，再次感谢他们
+感谢前人的无私奉献
 
 Respect！！！
 
