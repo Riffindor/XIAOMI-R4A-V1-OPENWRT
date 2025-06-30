@@ -192,7 +192,7 @@ iptables -t mangle -A POSTROUTING -j TTL --ttl-set 64
 
 ## 设置UA2F
 
-scp to openwrt，修改/etc/config/autoua2f(开机自动设置ua2f)
+scp to openwrt，修改/etc/config/ua2f
 
 #自动配置防火墙（默认开启）（建议开启）
 
