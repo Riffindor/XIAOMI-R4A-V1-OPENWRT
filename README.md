@@ -9,7 +9,7 @@
 
 需要用到WinSCP, PuTTY
 
-# OPENWRT官网选择对应版本和型号进行下载
+## OPENWRT官网选择对应版本和型号进行下载
 
 https://downloads.openwrt.org/
 
@@ -17,11 +17,11 @@ ramips/mt7621
 
 ![openwrt官网](https://github.com/user-attachments/assets/f316961f-574f-4051-adf4-346a8d044c7d)
 
-# 刷入固件
+## 刷固件
 
 PC接入路由器LAN口 进入breed
 
-telnet to breed
+telnet to <ins>breed</ins>
 
 利用工具架设虚拟服务器，上传.bin文件
 
@@ -29,27 +29,27 @@ wget htts://*****/x.bin
 
 输出信息
 
-#length A/B (*MB) 
+#length A/<ins>**B**</ins> (*MB) 
   
-  Saving to address 0x80001000
+  Saving to address <ins>**0x80001000**</ins>
 
 接着依次输入
 
-flash erase 0x180000 B
+flash erase 0x180000 <ins>**B**</ins>
 
-flash write 0x180000 0x80001000 B
+flash write 0x180000 <ins>0x80001000 **B**</ins>
 
-顺手刷入事前备份的epprom固件(修复5G信号弱问题)
+### 顺手刷入事前备份的epprom固件(修复5G信号弱问题)
 
 wget htts://*****/x.bin
 
-flash erase 0x50000 0x10000
+flash erase 0x50000 <ins>**0x10000**</ins>
 
-flash write 0x50000 0x80001000 0x10000
+flash write 0x50000 <ins>0x80001000 **0x10000**</ins>
 
-最后boot flash 0x180000
+最后boot flash <ins>**0x180000**</ins>
 
-3.配置openwrt环境
+## 配置openwrt环境
 
   后台地址192.168.1.1
 
@@ -61,11 +61,11 @@ filter搜索
 
 安装iptables-nft, ip6tables-nft, kmod-macvlan, mwan3, luci-app-mwan3, ua2f需要手动下载(https://github.com/Zxilly/UA2F)
 
-# 设置网口
+## 设置网口
 
 进入Interfaces删除lan外所有网口
 
-Devices-Add device configuration
+### Devices-Add device configuration
 
 ![add devices](https://github.com/user-attachments/assets/d3a00e2e-ab1d-4cb5-8962-bdb08f8454d0)
 
@@ -79,7 +79,7 @@ Mode: Private
 
 MAC:手动设置(否则每次重启会变)
 
-Interfaces- Add new interfaces
+### Interfaces- Add new interfaces
 
 ![add interface](https://github.com/user-attachments/assets/fe02901a-0fbc-4e7b-8664-68598b99202d)
 
@@ -99,11 +99,11 @@ Firewall Setting 选择WAN
 
 按自己实际需求来
 
-# 设置叠加(按照自己实际情况设置)
+## 设置叠加(按照自己实际情况设置)
 
 打开Network-MultiWAN Manager
 
-MultiWAN Manager – Interfaces-add 
+### MultiWAN Manager – Interfaces-add 
 
 ![mwan3 add interface](https://github.com/user-attachments/assets/4db7b07f-9979-4e8b-8150-f66028b27b4d)
 
@@ -117,7 +117,7 @@ Tracking hostname or IP address: Baidu.com, qq.com
 
 其他不动
 
-MultiWAN Manager – Members-add
+### MultiWAN Manager – Members-add
 
 ![mwan3 add member](https://github.com/user-attachments/assets/f4710976-c02b-4386-bb5b-9e85d7e13f21)
 
@@ -137,7 +137,7 @@ MultiWAN Manager – Policies
 
 Member used: wan1
 
-# Firewall4 自定义规则
+## Firewall4 自定义规则
 
 scp to openwrt，修改/etc/config/firewall
 
@@ -152,9 +152,9 @@ config include
 
 在etc目录下新建文件：firewall.user，这个文件里就是保存自定义规则的，但是需要注意的是，fw4使用的是nfttables命令(安装iptables-nft自动转换)
 
-# NTP&TTL设置
+## NTP&TTL设置
 
-System-Time synchronization
+### System-Time synchronization
 
 ![time-sync](https://github.com/user-attachments/assets/3c7ee0e0-4988-45f5-82ab-962bc3718413)
 
@@ -165,13 +165,11 @@ Provide NTP server√
 NTP server candidates: ntp1.aliyun.com, time1.cloud.tencent.com, stdtime.gov.hk, pool.ntp.org
                        
                                           
-修改/etc/firewall.user
+### 修改/etc/firewall.user
 
 iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53
 
 iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53
-
-#防时钟偏移检测
 
 iptables -t nat -N ntp_force_local
 
@@ -185,11 +183,9 @@ iptables -t nat -A ntp_force_local -d 192.168.0.0/16 -j RETURN
 
 iptables -t nat -A ntp_force_local -s 192.168.0.0/16 -j DNAT --to-destination 192.168.1.1
 
-#通过 iptables 修改 TTL 值
-
 iptables -t mangle -A POSTROUTING -j TTL --ttl-set 64
 
-# 设置UA2F
+## 设置UA2F
 
 scp to openwrt，修改/etc/config/autoua2f(开机自动设置ua2f)
 
@@ -217,7 +213,7 @@ uci set ua2f.firewall.handle_mmtls=0
 
 
 
-# 软件包OPKG更新问题(如遇到)
+## 软件包OPKG更新问题(如遇到)
 
 修改resolv.conf
 
@@ -230,7 +226,7 @@ nameserver 223.5.5.5
 
 nameserver 8.8.8.8
 
-注意:在 OpenWrt 中修改 resolv.conf 文件后，重启会导致文件恢复到默认状态。这是因为 resolv.conf 文件通常是由 dnsmasq 或其他服务动态生成的
+>[!NOTE] 注意:在 OpenWrt 中修改 resolv.conf 文件后，重启会导致文件恢复到默认状态。这是因为 resolv.conf 文件通常是由 dnsmasq 或其他服务动态生成的
 
 以下永久性操作不建议执行
 
@@ -263,7 +259,7 @@ mv /etc/resolv.conf /etc/resolv.conf.link
 echo "nameserver X.X.X.X" > /etc/resolv.conf
 
 
-# Final
+## Final
 
 感谢前人的无私奉献，我也只是把他们的知识综合运用起来，再次感谢他们
 
